@@ -2029,6 +2029,7 @@ sub get_cxn_params {
    my $driver = $self->prop('dbidriver') || '';
    if ( $driver eq 'Pg' ) {
       $dsn = 'DBI:Pg:dbname=' . ( $info->{D} || '' ) . ';'
+         . ';sslmode=allow'
          . join(';', map  { "$opts{$_}->{dsn}=$info->{$_}" }
                      grep { defined $info->{$_} }
                      qw(h P));
@@ -2039,6 +2040,7 @@ sub get_cxn_params {
                      grep { defined $info->{$_} }
                      qw(F h P S A))
          . ';mysql_read_default_group=client'
+         . ';mysql_ssl=0'
          . ($info->{L} ? ';mysql_local_infile=1' : '');
    }
    PTDEBUG && _d($dsn);
